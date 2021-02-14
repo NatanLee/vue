@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .block{
+            width: 200px;
+            height: 200px;
+            background-color: #c0c0c0;
+        }    
+        .red{
+            background-color: red;
+        }
+        .blue{
+            background-color: blue;
+        }
+
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+<!--связывание данных-->    
+        <h1>{{title}}</h1>
+        <h3>{{sayHello()}}</h3>
+        <a :href="link">Google</a>
+        <div v-html = "completeElement"></div>
+        <input type="text" v-model = "name">        
+        <p>{{name}}</p>
+        <input type="text" v-model.lazy = "name2">
+        <p>{{name2}}</p>
+        <input type="number" v-model = "someNumber">
+        <p>{{someNumber}}</p>
+<!--события-->
+        <!--<button v-on:click = "counter++">increase</button>-->
+        <!--<button @click = "counter++">increase</button>-->
+        <button @click = "increase(2, $event)">increase</button>
+        <p>{{counter}}</p>
+        <p>{{counter > 10 ? 'Greater than 10' : 'Less then 10'}}</p>
+        <p @mousemove = "getCoordinates">Current position: {{x}} / {{y}}
+            <span @mousemove.stop>Don't catch coordinates</span>
+        </p>
+<!--Вычисляемые значения-->
+        <div>
+            <button @click = "counter++">Increase</button>
+            <button @click = "counter--">Decrease</button>
+            <button @click = "secondCounter++">Increase second counter</button>
+            <p>Counter {{counter}} | {{secondCounter}}</p>
+            <p>Result {{result()}} | {{output}}</p>
+        </div>
+<!--Стилизация-->
+        <div class="block" :style = "{'backgroundColor': 'green'}"></div>   
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                title: 'Hello world',
+                link: 'https://www.google.ru/',
+                completeElement: `<span>i'm new element <a href="#">google</a></span>`,
+                name: 'placeholder',
+                name2: '',
+                someNumber: 0,
+                counter: 0,
+                secondCounter: 0,
+                x: 0,
+                y: 0,
+            },
+            methods: {
+                sayHello(){
+                    setTimeout(() => this.title = "Changed", 3000);
+                    //this.title = "Changed"
+                    return this.title;
+                },
+                increase(step, event){
+                    console.log(event);
+                    this.counter += step;
+                },
+                getCoordinates(){
+                    this.x = event.clientX;
+                    this.y = event.clientY;
+                },
+                result(){
+                    console.log('Method');
+                    return this.counter > 5 ? 'Greater than 5' : 'Less than 5';
+                },
+            },
+            computed: {
+                output(){
+                    console.log('Computed');
+                    return this.counter > 5 ? 'Greater than 5' : 'Less than 5';
+                },
+            },
+            mounted(){
+                console.log(this);
+            },
+        });
+    </script>
+</body>
+</html>
