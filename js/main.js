@@ -23,8 +23,26 @@ const app = new Vue({
                 })
         },
         addProduct(product){
-            console.log(product.id);
+            //console.log(product);
+            let find = this.cartItems.find(el => el.id === product.id);            
+            if(find){
+                find.quantity++;
+            }else{
+                let prod = Object.assign({quantity: 1}, product);
+                this.cartItems.push(prod);
+            }
+            //console.log(find);
+            //console.log(this.products[0].id);
+            //let find = this.cartItems.find(el => el.id_product === product.id_product);            
         },
+        remove(item) {
+            if (item.quantity > 1) {
+                item.quantity--;
+            }else{
+                this.cartItems.splice(this.cartItems.indexOf(item), 1)
+            }
+        },
+
         filter(){           
             const regexp = new RegExp(this.userSearch, 'i');
             this.filtered = this.products.filter(product => regexp.test(product.title));
